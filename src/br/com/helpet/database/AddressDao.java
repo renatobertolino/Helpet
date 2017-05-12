@@ -32,7 +32,7 @@ public class AddressDao implements Dao<Address>{
 	public void update(Address a) {
 		try (Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement("UPDATE address SET street=?, city=?, state=?, complement=?"
-					+ "WHERE id=" + a.getId());
+					+ " WHERE id=" + a.getId());
 			pstm.setString (1, a.getStreet());
 			pstm.setString (2, a.getCity());
 			pstm.setString (3, a.getState());
@@ -61,7 +61,7 @@ public class AddressDao implements Dao<Address>{
 	public List<Address> list() {
 		List<Address> addresses = new ArrayList<>();
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM animal");
+			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM address");
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()){
 				Address address = new Address();
@@ -84,7 +84,7 @@ public class AddressDao implements Dao<Address>{
 	public Address find(long id) {
 		Address address = new Address();
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM animal");
+			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM address WHERE id="+id);
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()){
 				address.setId(rs.getInt("id"));

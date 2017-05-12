@@ -34,7 +34,7 @@ public class PersonDao implements Dao<Person>{
 	public void update(Person p) {
 		try (Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement("UPDATE person SET name=?, address_id=?, email=?, cpf=?, phone=?"
-					+ "WHERE id=" + p.getId());
+					+ " WHERE id=" + p.getId());
 			pstm.setString (1, p.getName());
 			pstm.setLong   (2, p.getAddress().getId());
 			pstm.setString (3, p.getEmail());
