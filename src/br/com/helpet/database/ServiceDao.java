@@ -12,13 +12,13 @@ import br.com.helpet.entities.Service;
 public class ServiceDao implements Dao<Service>{
 
 	@Override
-	public void insert(Service t) {
+	public void insert(Service s) {
 		try (Connection connection = DatabaseHelper.connect()){
 
 			PreparedStatement pstm = connection.prepareStatement("INSERT INTO service (value, description) "
 					+ "   VALUES (?,?)");
-			pstm.setDouble(1, t.getValue());
-			pstm.setString (2, t.getDescription());
+			pstm.setDouble(1, s.getValue());
+			pstm.setString (2, s.getDescription());
 			pstm.executeUpdate();
 			pstm.close();
 
@@ -31,12 +31,12 @@ public class ServiceDao implements Dao<Service>{
 	}
 
 	@Override
-	public void update(Service t) {
+	public void update(Service s) {
 		try (Connection connection = DatabaseHelper.connect()){
 
-			PreparedStatement pstm = connection.prepareStatement("UPDATE service SET value=?, description=? WHERE id="+t.getId());
-			pstm.setDouble(1, t.getValue());
-			pstm.setString(2, t.getDescription());
+			PreparedStatement pstm = connection.prepareStatement("UPDATE service SET value=?, description=? WHERE id="+s.getId());
+			pstm.setDouble(1, s.getValue());
+			pstm.setString(2, s.getDescription());
 			pstm.executeUpdate();
 			pstm.close();
 
@@ -49,7 +49,7 @@ public class ServiceDao implements Dao<Service>{
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(int id) {
 		try (Connection connection = DatabaseHelper.connect()){
 
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM service WHERE id="+id);
@@ -93,7 +93,7 @@ public class ServiceDao implements Dao<Service>{
 	}
 
 	@Override
-	public Service find(long id) {
+	public Service find(int id) {
 		
 		Service service = new Service();
 		

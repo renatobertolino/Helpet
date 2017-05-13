@@ -14,14 +14,14 @@ import br.com.helpet.entities.Person;
 public class AppointmentDao implements Dao<Appointment>{
 
 	@Override
-	public void insert(Appointment t) {
+	public void insert(Appointment a) {
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("INSERT INTO appointment (animal, person, date) "
+			PreparedStatement pstm = connection.prepareStatement("INSERT INTO appointment (animal_id, person_id, date) "
 					+ "   VALUES (?,?,?)");
 
-			pstm.setObject(1, t.getAnimal());
-			pstm.setObject(2, t.getPerson());
-			pstm.setDate(3, t.getDate());
+			pstm.setInt(1, a.getAnimal().getId());
+			pstm.setInt(2, a.getPerson().getId());
+			pstm.setDate(3, a.getDate());
 
 			pstm.executeUpdate();
 			pstm.close();
@@ -33,14 +33,14 @@ public class AppointmentDao implements Dao<Appointment>{
 	}
 
 	@Override
-	public void update(Appointment t) {
+	public void update(Appointment a) {
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("UPDATE appointment SET animal=?, person=?, date=?"
-					+ " WHERE id=" + t.getId());
+			PreparedStatement pstm = connection.prepareStatement("UPDATE appointment SET animal_id=?, person_id=?, date=?"
+					+ " WHERE id=" + a.getId());
 
-			pstm.setObject(1, t.getAnimal());
-			pstm.setObject(2, t.getPerson());
-			pstm.setDate(3, t.getDate());
+			pstm.setInt(1, a.getAnimal().getId());
+			pstm.setInt(2, a.getPerson().getId());
+			pstm.setDate(3, a.getDate());
 
 			pstm.executeUpdate();
 			pstm.close();
@@ -53,7 +53,7 @@ public class AppointmentDao implements Dao<Appointment>{
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(int id) {
 		try (Connection connection = DatabaseHelper.connect()){
 
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM appointment WHERE id="+id);
@@ -77,13 +77,15 @@ public class AppointmentDao implements Dao<Appointment>{
 
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM appointment");
 			ResultSet rs = pstm.executeQuery();
+			AnimalDao animalDao = new AnimalDao();
+			PersonDao personDao = new PersonDao();
 
 			while(rs.next()){
 
 				Appointment appointment = new Appointment();
 				appointment.setId(rs.getInt("id"));
-				appointment.setAnimal( (Animal) rs.getObject("animal"));
-				appointment.setPerson( (Person) rs.getObject("person"));
+				appointment.setAnimal(animalDao.find(rs.getInt("animal_id")));
+				appointment.setPerson(personDao.find(rs.getInt("person_id")));
 				appointment.setDate(rs.getDate("date"));
 
 				appointments.add(appointment);
@@ -97,19 +99,21 @@ public class AppointmentDao implements Dao<Appointment>{
 	}
 
 	@Override
-	public Appointment find(long id) {
+	public Appointment find(int id) {
 		Appointment appointment = new Appointment();
 
 		try (Connection connection = DatabaseHelper.connect()){
 
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM appointment WHERE id="+id);
 			ResultSet rs = pstm.executeQuery();
+			AnimalDao animalDao = new AnimalDao();
+			PersonDao personDao = new PersonDao();
 
 			while(rs.next()){
 
 				appointment.setId(rs.getInt("id"));
-				appointment.setAnimal( (Animal) rs.getObject("animal"));
-				appointment.setPerson( (Person) rs.getObject("person"));
+				appointment.setAnimal(animalDao.find(rs.getInt("animal_id")));
+				appointment.setPerson(personDao.find(rs.getInt("person_id")));
 				appointment.setDate(rs.getDate("date"));
 
 			}
@@ -120,6 +124,7 @@ public class AppointmentDao implements Dao<Appointment>{
 		}
 
 
-		return appointment;	}
+		return appointment;	
+	}
 
 }

@@ -16,10 +16,10 @@ public class ExpenseDao implements Dao<Expense>{
 	@Override
 	public void insert(Expense t) {
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("INSERT INTO expense (person, service, date) "
+			PreparedStatement pstm = connection.prepareStatement("INSERT INTO expense (person_id, service_id, date) "
 					+ "   VALUES (?,?,?)");
-			pstm.setObject(1, t.getPerson());
-			pstm.setObject(2, t.getService());
+			pstm.setInt(1, t.getPerson().getId());
+			pstm.setInt(2, t.getService().getId());
 			pstm.setDate(3, t.getDate());
 
 			pstm.executeUpdate();
@@ -34,11 +34,11 @@ public class ExpenseDao implements Dao<Expense>{
 	@Override
 	public void update(Expense t) {
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("UPDATE expense SET person=?, service=?, date=?"
+			PreparedStatement pstm = connection.prepareStatement("UPDATE expense SET person_id=?, service_id=?, date=?"
 					+ " WHERE id=" + t.getId());
 
-			pstm.setObject(1, t.getPerson());
-			pstm.setObject(2, t.getService());
+			pstm.setInt(1, t.getPerson().getId());
+			pstm.setInt(2, t.getService().getId());
 			pstm.setDate(3, t.getDate());
 
 			pstm.executeUpdate();
@@ -51,7 +51,7 @@ public class ExpenseDao implements Dao<Expense>{
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(int id) {
 		try (Connection connection = DatabaseHelper.connect()){
 
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM expense WHERE id="+id);
@@ -75,13 +75,15 @@ public class ExpenseDao implements Dao<Expense>{
 			
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM expense");
 			ResultSet rs = pstm.executeQuery();
-		
+			PersonDao personDao = new PersonDao();
+			ServiceDao serviceDao = new ServiceDao();
+			
 			while(rs.next()){
 				
 				Expense expense = new Expense();
 				expense.setId(rs.getInt("id"));
-				expense.setPerson( (Person) rs.getObject("person"));
-				expense.setService( (Service) rs.getObject("service"));
+				expense.setPerson(personDao.find(rs.getInt("person_id")));
+				expense.setService(serviceDao.find(rs.getInt("service_id")));
 				expense.setDate(rs.getDate("date"));
 				
 				expenses.add(expense);
@@ -94,19 +96,22 @@ public class ExpenseDao implements Dao<Expense>{
 	}
 
 	@Override
-	public Expense find(long id) {
+	public Expense find(int id) {
 		Expense expense = new Expense();
 		
 		try (Connection connection = DatabaseHelper.connect()){
 			
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM expense WHERE id="+id);
 			ResultSet rs = pstm.executeQuery();
+			PersonDao personDao = new PersonDao();
+			ServiceDao serviceDao = new ServiceDao();
+			
 			
 			while(rs.next()){
 				
 				expense.setId(rs.getInt("id"));
-				expense.setPerson( (Person) rs.getObject("person"));
-				expense.setService( (Service) rs.getObject("service"));
+				expense.setPerson(personDao.find(rs.getInt("person_id")));
+				expense.setService(serviceDao.find(rs.getInt("service_id")));
 				expense.setDate(rs.getDate("date"));
 
 			}

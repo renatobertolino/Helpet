@@ -48,7 +48,7 @@ public class PersonDao implements Dao<Person>{
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(int id) {
 		try (Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM person WHERE id="+id);
 			pstm.executeUpdate();
@@ -97,7 +97,7 @@ public class PersonDao implements Dao<Person>{
 	}
 
 	@Override
-	public Person find(long id) {
+	public Person find(int id) {
 		Person person =new Person();
 		try (Connection connection = DatabaseHelper.connect()){
 			Statement stm = connection.createStatement();

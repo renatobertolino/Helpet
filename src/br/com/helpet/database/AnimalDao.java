@@ -51,7 +51,7 @@ public class AnimalDao implements Dao<Animal>{
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(int id) {
 		try (Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM animal WHERE id="+id);
 			pstm.executeUpdate();
@@ -90,7 +90,7 @@ public class AnimalDao implements Dao<Animal>{
 	}
 
 	@Override
-	public Animal find(long id) {
+	public Animal find(int id) {
 		Animal animal =new Animal();
 		try (Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM animal WHERE id="+id);

@@ -45,7 +45,7 @@ public class AddressDao implements Dao<Address>{
 	}
 
 	@Override
-	public boolean delete(long id) {
+	public boolean delete(int id) {
 		try (Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM address WHERE id="+id);
 			pstm.executeUpdate();
@@ -81,7 +81,7 @@ public class AddressDao implements Dao<Address>{
 	}
 
 	@Override
-	public Address find(long id) {
+	public Address find(int id) {
 		Address address = new Address();
 		try (Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM address WHERE id="+id);

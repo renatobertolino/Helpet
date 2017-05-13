@@ -8,8 +8,8 @@ public interface Dao<T extends BaseEntity> {
 
 	void insert(T t);
 	void update(T t);
-	boolean delete(long id);
+	boolean delete(int id);
 	List<T> list();
-	T find(long id);
+	T find(int id);
 	
 }
