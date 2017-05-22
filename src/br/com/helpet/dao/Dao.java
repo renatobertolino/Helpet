@@ -1,4 +1,4 @@
-package br.com.helpet.database;
+package br.com.helpet.dao;
 
 import java.util.List;
 

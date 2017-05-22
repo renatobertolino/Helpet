@@ -1,4 +1,4 @@
-package br.com.helpet.database;
+package br.com.helpet.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.helpet.database.DatabaseHelper;
+import br.com.helpet.database.Queries;
 import br.com.helpet.entities.Adoption;
 
 public class AdoptionDao implements Dao<Adoption>{
