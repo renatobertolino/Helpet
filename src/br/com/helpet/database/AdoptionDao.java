@@ -67,7 +67,7 @@ public class AdoptionDao implements Dao<Adoption>{
 				adoption.setAnimal(animalDao.find(rs.getInt("animal_id")));
 				adoption.setPerson(personDao.find(rs.getInt("person_id")));
 				adoption.setDate(rs.getDate("adoption_date"));
-				
+
 				adoptions.add(adoption);
 			}
 			pstm.close();
@@ -97,4 +97,26 @@ public class AdoptionDao implements Dao<Adoption>{
 		return adoption;
 	}
 
+	public ResultSet getAdoptionHistory(){
+		ResultSet rs = null;
+		try(Connection connection = DatabaseHelper.connect()){
+			PreparedStatement pstm = connection.prepareStatement(Queries.ADOPTION_HISTORY_QUERY);
+			rs = pstm.executeQuery();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	public ResultSet getAdoptionSummary(String city){
+		ResultSet rs = null;
+		try(Connection connection = DatabaseHelper.connect()){
+			PreparedStatement pstm = connection.prepareStatement(Queries.ADOPTIONS_SUMMARY_QUERY);
+			pstm.setString(1, city);
+			rs = pstm.executeQuery();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
 }

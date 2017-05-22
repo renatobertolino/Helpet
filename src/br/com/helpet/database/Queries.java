@@ -40,10 +40,4 @@ public class Queries {
 														 " WHERE add.city = ?"+
 														 " GROUP BY a.specie"+
 														 " ORDER BY COUNT(ad.id) DESC, a.specie ASC, add.city ASC";
-	
-	
-	
-	
-	
-	
 }

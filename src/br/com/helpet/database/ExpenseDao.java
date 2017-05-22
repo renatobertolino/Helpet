@@ -1,6 +1,7 @@
 package br.com.helpet.database;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,7 +52,6 @@ public class ExpenseDao implements Dao<Expense>{
 	@Override
 	public boolean delete(int id) {
 		try (Connection connection = DatabaseHelper.connect()){
-
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM expense WHERE id="+id);
 			pstm.executeUpdate();
 			pstm.close();
@@ -77,7 +77,6 @@ public class ExpenseDao implements Dao<Expense>{
 			ServiceDao serviceDao = new ServiceDao();
 			
 			while(rs.next()){
-				
 				Expense expense = new Expense();
 				expense.setId(rs.getInt("id"));
 				expense.setAnimal(animalDao.find(rs.getInt("animal_id")));
@@ -105,21 +104,52 @@ public class ExpenseDao implements Dao<Expense>{
 			ServiceDao serviceDao = new ServiceDao();
 			
 			while(rs.next()){
-				
 				expense.setId(rs.getInt("id"));
 				expense.setAnimal(animalDao.find(rs.getInt("animal_id")));
 				expense.setService(serviceDao.find(rs.getInt("service_id")));
 				expense.setDate(rs.getDate("date"));
-
 			}
-			
 			pstm.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
 		return expense;
 	}
-
+	
+	public ResultSet getSpeciesExpenses(){
+		ResultSet rs = null;
+		try(Connection connection = DatabaseHelper.connect()){
+			PreparedStatement pstm = connection.prepareStatement(Queries.SPECIE_EXPENSES_QUERY);
+			rs = pstm.executeQuery();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	public ResultSet getServicesHistory(String description){
+		ResultSet rs = null;
+		try(Connection connection = DatabaseHelper.connect()){
+			PreparedStatement pstm = connection.prepareStatement(Queries.SERVICE_HISTORY_QUERY);
+			pstm.setString(1, description);
+			rs = pstm.executeQuery();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	public ResultSet getExpensesSummary(Date start, Date end){
+		ResultSet rs = null;
+		try(Connection connection = DatabaseHelper.connect()){
+			PreparedStatement pstm = connection.prepareStatement(Queries.EXPENSES_SUMMARY_QUERY);
+			pstm.setDate(1, start);
+			pstm.setDate(2, end);
+			rs = pstm.executeQuery();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
 }
