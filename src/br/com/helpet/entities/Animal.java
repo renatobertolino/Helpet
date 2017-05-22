@@ -8,21 +8,20 @@ public class Animal extends BaseEntity{
 	private double weight;
 	private int age;
 	private String description;
-	private boolean flagAdoption;
+	private Person person;
 	
 	public Animal() {
 		
 	}
 
-	public Animal(AnimalEnum specie, String breed, String gender, double weight, int age, String description,
-			boolean flagAdoption) {
+	public Animal(AnimalEnum specie, String breed, String gender, double weight, int age, String description, Person person) {
 		this.specie = specie;
 		this.breed = breed;
 		this.gender = gender;
 		this.weight = weight;
 		this.age = age;
 		this.description = description;
-		this.flagAdoption = flagAdoption;
+		this.person = person;
 	}
 
 	public AnimalEnum getSpecie() {
@@ -73,14 +72,14 @@ public class Animal extends BaseEntity{
 		this.description = description;
 	}
 
-	public boolean getFlagAdoption() {
-		return flagAdoption;
+	public Person getPerson() {
+		return person;
 	}
 
-	public void setFlagAdoption(boolean flagAdoption) {
-		this.flagAdoption = flagAdoption;
+	public void setPerson(Person person) {
+		this.person = person;
 	}
-	
+
 	public enum AnimalEnum {
 		CACHORRO, GATO;	
 		

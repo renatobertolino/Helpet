@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.helpet.entities.Address;
 import br.com.helpet.entities.Person;
 
 public class PersonDao implements Dao<Person>{
@@ -19,7 +18,7 @@ public class PersonDao implements Dao<Person>{
 			PreparedStatement pstm = connection.prepareStatement("INSERT INTO person (name, address_id, email, cpf, phone) "
 					+ "   VALUES (?,?,?,?,?)");
 			pstm.setString (1, p.getName());
-			pstm.setLong   (2, p.getAddress().getId());
+			pstm.setInt   (2, p.getAddress().getId());
 			pstm.setString (3, p.getEmail());
 			pstm.setString (4, p.getCpf());
 			pstm.setString (5, p.getPhone());
@@ -36,7 +35,7 @@ public class PersonDao implements Dao<Person>{
 			PreparedStatement pstm = connection.prepareStatement("UPDATE person SET name=?, address_id=?, email=?, cpf=?, phone=?"
 					+ " WHERE id=" + p.getId());
 			pstm.setString (1, p.getName());
-			pstm.setLong   (2, p.getAddress().getId());
+			pstm.setInt   (2, p.getAddress().getId());
 			pstm.setString (3, p.getEmail());
 			pstm.setString (4, p.getCpf());
 			pstm.setString (5, p.getPhone());
@@ -66,11 +65,12 @@ public class PersonDao implements Dao<Person>{
 		try (Connection connection = DatabaseHelper.connect()){
 			Statement stm = connection.createStatement();
 			ResultSet rs = stm.executeQuery("SELECT * FROM person");
+			AddressDao addressDao = new AddressDao();
 			while(rs.next()){
 				Person person = new Person();
 				person.setId(rs.getInt("id"));
 				person.setName(rs.getString("name"));
-				person.setAddress(retrieveAddress(stm, rs.getLong("address_id")));
+				person.setAddress(addressDao.find(rs.getInt("address_id")));
 				person.setEmail(rs.getString("email"));
 				person.setCpf(rs.getString("cpf"));
 				person.setPhone(rs.getString("phone"));
@@ -84,28 +84,17 @@ public class PersonDao implements Dao<Person>{
 		return people;
 	}
 
-	private Address retrieveAddress(Statement stm, long id) throws SQLException {
-		Address address = new Address();
-		ResultSet rs = stm.executeQuery("SELECT * FROM address WHERE id="+id);
-		while(rs.next()){
-			address.setStreet(rs.getString("street"));
-			address.setCity(rs.getString("city"));
-			address.setState(rs.getString("state"));
-			address.setComplement(rs.getString("complement"));
-		}
-		return address;
-	}
-
 	@Override
 	public Person find(int id) {
 		Person person =new Person();
 		try (Connection connection = DatabaseHelper.connect()){
 			Statement stm = connection.createStatement();
 			ResultSet rs = stm.executeQuery("SELECT * FROM person WHERE id="+id);
+			AddressDao addressDao = new AddressDao();
 			while(rs.next()){
 				person.setId(rs.getInt("id"));
 				person.setName(rs.getString("name"));
-				person.setAddress(retrieveAddress(stm, rs.getLong("address_id")));
+				person.setAddress(addressDao.find(rs.getInt("address_id")));
 				person.setEmail(rs.getString("email"));
 				person.setCpf(rs.getString("cpf"));
 				person.setPhone(rs.getString("phone"));

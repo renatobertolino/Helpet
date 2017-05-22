@@ -4,25 +4,25 @@ import java.sql.Date;
 
 public class Expense extends BaseEntity{
 
-	private Person person;
+	private Animal animal;
 	private Service service;
 	private Date date;
 	
 	public Expense() {
 	}
 
-	public Expense(Person person, Service service, Date date) {
-		this.person = person;
+	public Expense(Animal animal, Service service, Date date) {
+		this.animal = animal;
 		this.service = service;
 		this.date = date;
 	}
 
-	public Person getPerson() {
-		return person;
+	public Animal getAnimal() {
+		return animal;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
 	}
 
 	public Service getService() {

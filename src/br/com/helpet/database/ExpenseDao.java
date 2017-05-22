@@ -8,17 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.helpet.entities.Expense;
-import br.com.helpet.entities.Person;
-import br.com.helpet.entities.Service;
 
 public class ExpenseDao implements Dao<Expense>{
 
 	@Override
 	public void insert(Expense t) {
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("INSERT INTO expense (person_id, service_id, date) "
+			PreparedStatement pstm = connection.prepareStatement("INSERT INTO expense (animal_id, service_id, date) "
 					+ "   VALUES (?,?,?)");
-			pstm.setInt(1, t.getPerson().getId());
+			pstm.setInt(1, t.getAnimal().getId());
 			pstm.setInt(2, t.getService().getId());
 			pstm.setDate(3, t.getDate());
 
@@ -34,10 +32,10 @@ public class ExpenseDao implements Dao<Expense>{
 	@Override
 	public void update(Expense t) {
 		try (Connection connection = DatabaseHelper.connect()){
-			PreparedStatement pstm = connection.prepareStatement("UPDATE expense SET person_id=?, service_id=?, date=?"
+			PreparedStatement pstm = connection.prepareStatement("UPDATE expense SET animal_id=?, service_id=?, date=?"
 					+ " WHERE id=" + t.getId());
 
-			pstm.setInt(1, t.getPerson().getId());
+			pstm.setInt(1, t.getAnimal().getId());
 			pstm.setInt(2, t.getService().getId());
 			pstm.setDate(3, t.getDate());
 
@@ -75,14 +73,14 @@ public class ExpenseDao implements Dao<Expense>{
 			
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM expense");
 			ResultSet rs = pstm.executeQuery();
-			PersonDao personDao = new PersonDao();
+			AnimalDao animalDao = new AnimalDao();
 			ServiceDao serviceDao = new ServiceDao();
 			
 			while(rs.next()){
 				
 				Expense expense = new Expense();
 				expense.setId(rs.getInt("id"));
-				expense.setPerson(personDao.find(rs.getInt("person_id")));
+				expense.setAnimal(animalDao.find(rs.getInt("animal_id")));
 				expense.setService(serviceDao.find(rs.getInt("service_id")));
 				expense.setDate(rs.getDate("date"));
 				
@@ -103,14 +101,13 @@ public class ExpenseDao implements Dao<Expense>{
 			
 			PreparedStatement pstm = connection.prepareStatement("SELECT * FROM expense WHERE id="+id);
 			ResultSet rs = pstm.executeQuery();
-			PersonDao personDao = new PersonDao();
+			AnimalDao animalDao = new AnimalDao();
 			ServiceDao serviceDao = new ServiceDao();
-			
 			
 			while(rs.next()){
 				
 				expense.setId(rs.getInt("id"));
-				expense.setPerson(personDao.find(rs.getInt("person_id")));
+				expense.setAnimal(animalDao.find(rs.getInt("animal_id")));
 				expense.setService(serviceDao.find(rs.getInt("service_id")));
 				expense.setDate(rs.getDate("date"));
 
