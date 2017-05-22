@@ -19,13 +19,12 @@ public class AddressDao implements Dao<Address>{
 			pstm.setString (1, a.getStreet());
 			pstm.setString (2, a.getCity());
 			pstm.setString (3, a.getState());
-			pstm.setString (3, a.getComplement());
+			pstm.setString (4, a.getComplement());
 			pstm.executeUpdate();
 			pstm.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
-		
+		}		
 	}
 
 	@Override
