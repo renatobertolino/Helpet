@@ -11,5 +11,4 @@ public interface Dao<T extends BaseEntity> {
 	boolean delete(int id);
 	List<T> list();
 	T find(int id);
-	
 }
