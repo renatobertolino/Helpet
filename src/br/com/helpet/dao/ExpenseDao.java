@@ -12,7 +12,7 @@ import br.com.helpet.database.DatabaseHelper;
 import br.com.helpet.database.Queries;
 import br.com.helpet.entities.Expense;
 
-public class ExpenseDao implements Dao<Expense>{
+public class ExpenseDao implements IExpenseDao{
 
 	@Override
 	public void insert(Expense t) {
@@ -118,40 +118,62 @@ public class ExpenseDao implements Dao<Expense>{
 		return expense;
 	}
 	
-	public ResultSet getSpeciesExpenses(){
+	public List<String> getSpeciesExpenses(){
 		ResultSet rs = null;
+		List<String> result = new ArrayList<>();
 		try(Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement(Queries.SPECIE_EXPENSES_QUERY);
 			rs = pstm.executeQuery();
+			
+			while(rs.next()){
+				String row = "Espécie: "+ rs.getString(1) + " - Quantidade de Serviços: " + rs.getInt(2) + " - Gastos R$" + rs.getDouble(3);
+				result.add(row);
+			}
+			
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return result;
 	}
 	
-	public ResultSet getServicesHistory(String description){
+	public List<String> getServicesHistory(String description){
 		ResultSet rs = null;
+		List<String> result = new ArrayList<>();
 		try(Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement(Queries.SERVICE_HISTORY_QUERY);
 			pstm.setString(1, description);
 			rs = pstm.executeQuery();
+			
+			while(rs.next()){
+				String row = "Serviço: "+ rs.getString(1) + " - Quantidade: " + rs.getInt(2) + " - Total R$" + rs.getDouble(3);
+				result.add(row);
+			}
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return result;
 	}
 	
-	public ResultSet getExpensesSummary(Date start, Date end){
+	public List<String> getExpensesSummary(Date start, Date end){
 		ResultSet rs = null;
+		List<String> result = new ArrayList<>();
 		try(Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement(Queries.EXPENSES_SUMMARY_QUERY);
 			pstm.setDate(1, start);
 			pstm.setDate(2, end);
 			rs = pstm.executeQuery();
+			
+			while(rs.next()){
+				String row = "Serviço: "+ rs.getString(1) + " - Quantidade: " + rs.getInt(2) + " - Gastos R$" + rs.getDouble(3);
+				result.add(row);
+			}
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return result;
 	}
 	
 }

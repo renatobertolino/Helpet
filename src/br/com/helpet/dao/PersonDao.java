@@ -11,7 +11,7 @@ import java.util.List;
 import br.com.helpet.database.DatabaseHelper;
 import br.com.helpet.entities.Person;
 
-public class PersonDao implements Dao<Person>{
+public class PersonDao implements IDao<Person>{
 
 	@Override
 	public void insert(Person p) {

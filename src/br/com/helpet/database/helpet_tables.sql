@@ -47,7 +47,7 @@ CREATE TABLE adoption(
 
 CREATE TABLE service(
 	id SERIAl,
-	value money NOT NULL,
+	value double NOT NULL,
 	description varchar(255) NOT NULL,
 	PRIMARY KEY(id)
 );

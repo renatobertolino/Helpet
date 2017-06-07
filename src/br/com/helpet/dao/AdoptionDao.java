@@ -11,7 +11,7 @@ import br.com.helpet.database.DatabaseHelper;
 import br.com.helpet.database.Queries;
 import br.com.helpet.entities.Adoption;
 
-public class AdoptionDao implements Dao<Adoption>{
+public class AdoptionDao implements IAdoptionDao{
 
 	@Override
 	public void insert(Adoption a) {
@@ -99,26 +99,40 @@ public class AdoptionDao implements Dao<Adoption>{
 		return adoption;
 	}
 
-	public ResultSet getAdoptionHistory(){
+	public List<String> getAdoptionHistory(){
 		ResultSet rs = null;
+		List<String> result = new ArrayList<>();
 		try(Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement(Queries.ADOPTION_HISTORY_QUERY);
 			rs = pstm.executeQuery();
+			
+			while(rs.next()){
+				String row = "Cidade: "+ rs.getString(1) + " - Quantidade de Adoções: " + rs.getInt(2);
+				result.add(row);
+			}
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return result;
 	}
 	
-	public ResultSet getAdoptionSummary(String city){
+	public List<String> getAdoptionSummary(String city){
 		ResultSet rs = null;
+		List<String> result = new ArrayList<>();
 		try(Connection connection = DatabaseHelper.connect()){
 			PreparedStatement pstm = connection.prepareStatement(Queries.ADOPTIONS_SUMMARY_QUERY);
 			pstm.setString(1, city);
 			rs = pstm.executeQuery();
+			
+			while(rs.next()){
+				String row = "Espécie: "+ rs.getString(1) + " - Local: " + rs.getString(2) + " - Quantidade de Adoções: " + rs.getInt(3);
+				result.add(row);
+			}
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return result;
 	}
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import br.com.helpet.database.DatabaseHelper;
 import br.com.helpet.entities.Address;
 
-public class AddressDao implements Dao<Address>{
+public class AddressDao implements IDao<Address>{
 
 	@Override
 	public void insert(Address a) {

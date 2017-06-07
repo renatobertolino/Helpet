@@ -10,7 +10,7 @@ import java.util.List;
 import br.com.helpet.database.DatabaseHelper;
 import br.com.helpet.entities.Service;
 
-public class ServiceDao implements Dao<Service>{
+public class ServiceDao implements IDao<Service>{
 
 	@Override
 	public void insert(Service s) {

@@ -22,7 +22,7 @@ public class Queries {
 												 	   " FROM expense e"+
 												       " INNER JOIN service s ON s.id = e.service_id"+
 												       " WHERE s.description = ?"+
-												       " GROUP BY s.value, e.expense_date"+
+												       " GROUP BY s.value, e.expense_date, s.description"+
 												       " ORDER BY e.expense_date DESC";
 	
 	public static final String EXPENSES_SUMMARY_QUERY = "SELECT s.description, COUNT(s.id), SUM(s.value)"+

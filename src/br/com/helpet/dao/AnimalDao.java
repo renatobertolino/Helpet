@@ -11,7 +11,7 @@ import br.com.helpet.database.DatabaseHelper;
 import br.com.helpet.entities.Animal;
 import br.com.helpet.entities.Animal.AnimalEnum;
 
-public class AnimalDao implements Dao<Animal>{
+public class AnimalDao implements IDao<Animal>{
 	
 	@Override
 	public void insert(Animal a) {
